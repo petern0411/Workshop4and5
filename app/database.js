@@ -1,3 +1,6 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+
 var initialData = {
   // The "user" collection. Contains all of the users in our Facebook system.
   "users": {
