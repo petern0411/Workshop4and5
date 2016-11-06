@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 var initialData = {
-  // The "user" collection. Contains all of the users in our Facebook system.
   "users": {
     // This user has id "1".
     "1": {
@@ -155,16 +154,16 @@ export function resetDatabase() {
 class ResetDatabase extends React.Component {
   render() {
     return (
-      <button className="btn btn-default" type="button" onClick={() => {
-          resetDatabase();
-          window.alert("Database reset! Refreshing the page now...");
-          document.location.reload(false);
-        }}>Reset Mock DB</button>
-      );
+      <button className="btn btn-default" type="button" onClick={
+          () => {
+            resetDatabase();
+            window.alert("Database reset! Refreshing the page now...");
+            document.location.reload(false);
+          }} > Reset Mock DB< /button>
+        );
+      }
     }
-  }
-
-  ReactDOM.render(
-    <ResetDatabase />,
-    document.getElementById('fb-db-reset')
-  );
+    ReactDOM.render(
+      <ResetDatabase />,
+      document.getElementById('fb-db-reset')
+    );

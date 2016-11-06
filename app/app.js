@@ -4,8 +4,8 @@ import ReactDOM from 'react-dom';
 class Feed extends React.Component {
 
   render() {
-     return <div> (
-
+     return  (
+       <div>
         <div className="fb-status-update-entry panel panel-default">
           <div className="panel-body">
             <ul className="nav nav-pills">
@@ -146,10 +146,11 @@ class Feed extends React.Component {
                       </ul>
                     </div>
                   </div>
-                );</div>
+                </div>
+              );
               }
             }
             ReactDOM.render(
-              <Feed />,
+              <Feed user ={4}/>,
               document.getElementById('fb-feed')
             );
