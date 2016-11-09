@@ -19,7 +19,7 @@ export default class FeedItem extends React.Component{
     clickEvent.preventDefault();
     if(clickEvent.button ===0){
       var callbackFunction = (updatedLikeCounter) =>{
-        this.setState({likeCounter: updateLikeCounter});
+        this.setState({likeCounter: updatedLikeCounter});
       };
 
       if(this.didUserLike()){
