@@ -45,7 +45,7 @@ var initialData = {
         {
           "author": 3,
           "contents": "sending hugs your way",
-          "postDate": "1453690800000"
+          "postDate": 1453690800000
         }
       ]
 

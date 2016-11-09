@@ -5,13 +5,11 @@
 			cb(data);
 		}, 4);
 	}
-
   /**
   * Given a feed item ID, returns a FeedItem object with references resolved.
   * Internal to the server, since it's synchronous.
   */
   function getFeedItemSync(feedItemId) {
-
 		var feedItem = readDocument('feedItems', feedItemId);
 		feedItem.likeCounter =
 			feedItem.likeCounter.map((id) => readDocument('users', id));
@@ -51,3 +49,64 @@
  * Emulates how a REST call is *asynchronous* -- it calls your function back
  * some time in the future with data.
  */
+
+ /**
+ *Adds a new status update to the database
+ */
+	export function postStatusUpdate(user, location, contents, cb){
+		var time = new Date().getTime();
+		var newStatusUpdate = {
+			"likeCounter": [],
+			"type": "statusUpdate",
+			"contents":{
+				"author":user,
+				"postDate": time,
+				"location": location,
+				"contents": contents
+			},
+			"comments":[]
+		};
+
+		newStatusUpdate = addDocument('feedItems', newStatusUpdate);
+		// Add the status update reference to the front of the
+		// current user's feed.
+
+
+		var userData = readDocument('user',user);
+		var feedData = readDocument('feeds',userData.feed);
+		feedData.contents.unshift(newStatusUpdate._id);
+
+		writeDocument('feeds', feedData);
+		emulateServerReturn(newStatusUpdate, cb);
+ }
+
+ export function postComment(feedItemId, author, contents, cb){
+
+	var feedItem = readDocument('feedItems'. feedItemId);
+	feedItem.comments.push({
+		"author": author,
+		"contents": contents,
+		"postDate": new Date().getTime()
+	});
+	writeDocument('feedItems', feedItem);
+	emulateServerReturn(getFeedItemSync(feedItemId), cb);
+ }
+
+export function likeFeedItem(feedItemId, userId, cb){
+	var feedItem = readDocument('feedItem', feedItemId);
+	feedItem.likeCounter.push(userId);
+	writeDocument('feedItems',feedItem);
+	emulateServerReturn(feedItem.likeCounter.map((userId)=>
+		readDocument('users',userId)),cb);
+}
+
+export function unLikeFeedItem(feedItemId,userId,cb){
+	var feedItem = readDocument('feedItem', feedItemId);
+	var userIndex = feedItem.likeCounter.indexOf(userId);
+	if(userIndex !== -1){
+		feedItem.likeCounter.splice(userIndex, 1);
+		writeDocument('feedItem', feedItem);
+	}
+	emulateServerReturn(feedItem.likeCounter.map((userId)=>
+		readDocument('users',userId)), cb);
+}
